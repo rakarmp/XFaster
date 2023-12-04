@@ -32,7 +32,7 @@ fi
 clear
 . /system/etc/XCore/misc/get-bb.sh
 . /system/etc/XCore/misc/initialize.sh
-echo "cmds: zyc_l ${@}"
+echo "cmds: x_l ${@}"
 if [[ "${1}" == "f" ]];then
     cat "$MPATH/system/etc/XCore/info/logs.log"
 else

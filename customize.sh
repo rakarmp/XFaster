@@ -179,10 +179,10 @@ if [[ "$bin" == "xbin" ]];then
     sed -i "s/system\/bin\/sh/system\/xbin\/sh/g" $MODPATH/system/etc/XCore/main.sh
     sed -i "s/system\/bin\/sh/system\/xbin\/sh/g" $MODPATH/system/etc/XCore/misc/funclist.sh
     sed -i "s/system\/bin\/sh/system\/xbin\/sh/g" $MODPATH/system/etc/XCore/misc/initialize.sh
-    sed -i "s/system\/bin\/sh/system\/xbin\/sh/g" $MODPATH/system/xbin/zyc_g
-    sed -i "s/system\/bin\/sh/system\/xbin\/sh/g" $MODPATH/system/xbin/zyc_l
-    sed -i "s/system\/bin\/sh/system\/xbin\/sh/g" $MODPATH/system/xbin/zyc_le
-    sed -i "s/system\/bin\/sh/system\/xbin\/sh/g" $MODPATH/system/xbin/zyc_m
+    sed -i "s/system\/bin\/sh/system\/xbin\/sh/g" $MODPATH/system/xbin/x_g
+    sed -i "s/system\/bin\/sh/system\/xbin\/sh/g" $MODPATH/system/xbin/x_l
+    sed -i "s/system\/bin\/sh/system\/xbin\/sh/g" $MODPATH/system/xbin/x_le
+    sed -i "s/system\/bin\/sh/system\/xbin\/sh/g" $MODPATH/system/xbin/x_m
 fi
 
 ## override setting

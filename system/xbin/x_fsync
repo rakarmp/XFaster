@@ -31,7 +31,7 @@ if [ "$(id -u)" -gt "0" ] && [ "$(whoami)" != "root" ]; then
 fi
 clear
 . /system/etc/XCore/misc/get-bb.sh
-echo "cmds: zyc_fsync ${@}"
+echo "cmds: x_fsync ${@}"
 disableFsync(){
         WriteFsync "0" "N" && echo "Disabled fsync Success"
 }

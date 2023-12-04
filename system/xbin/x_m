@@ -33,7 +33,7 @@ clear
 . /system/etc/XCore/misc/get-bb.sh
 . /system/etc/XCore/misc/initialize.sh
 ModulesMode="$MPATH/system/etc/XCore/configs/modules_mode.conf"
-echo "cmds: zyc_m ${@}"
+echo "cmds: x_m ${@}"
 
 Gethelp(){
     echo "Quick info: "
@@ -45,7 +45,7 @@ Gethelp(){
     echo "display : modules mode depend display status"
     echo "auto : modules mode depend detected app and gpu usage"
     echo "anything or info : modules mode status"
-    echo "example : zyc_m auto"
+    echo "example : x_m auto"
 }
 forceON(){
     echo "Force On" > $ModulesMode

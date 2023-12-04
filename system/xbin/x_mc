@@ -37,13 +37,13 @@ echo "CPU frequency Changer"
 SaveFreq="N"
 ShowAndWrite(){
     echo "$1"
-    [[ "$SaveFreq" == "Y" ]] && echo "$1" >> /sdcard/zyc_freq_info.txt
+    [[ "$SaveFreq" == "Y" ]] && echo "$1" >> /sdcard/x_freq_info.txt
 }
 GetInfoFreqx(){
     local Pnumber="0"
     local Fnumber="0"
     echo ""
-    echo "List Cpu Freq :" && [[ "$SaveFreq" == "Y" ]] && echo "List Cpu Freq :" > /sdcard/zyc_freq_info.txt
+    echo "List Cpu Freq :" && [[ "$SaveFreq" == "Y" ]] && echo "List Cpu Freq :" > /sdcard/x_freq_info.txt
     ShowAndWrite ""
     for GetClustersNumber in $(ls /sys/devices/system/cpu/cpufreq | grep policy)
     do
@@ -65,10 +65,10 @@ GetInfoFreqx(){
     done
     if [[ "$SaveFreq" == "Y" ]];then
         echo "create current cpu freq list to txt files done"
-        echo "files at /sdcard/zyc_freq_info.txt"
+        echo "files at /sdcard/x_freq_info.txt"
     else
         echo "if u want to create a file for current cpu freq list to txt files"
-        echo "just type zyc_mc freq save"
+        echo "just type x_mc freq save"
     fi
 }
 
@@ -115,10 +115,10 @@ Gethelp(){
     echo "freq : to see list freq number"
     echo "anyword : to show this help"
     echo "example :"
-    echo "  - zyc_mc min 0 7"
-    echo "  - zyc_mc freq"
+    echo "  - x_mc min 0 7"
+    echo "  - x_mc freq"
 }
-echo "cmds: zyc_mc ${@}"
+echo "cmds: x_mc ${@}"
 if [[ "${1}" == "min" ]];then
     SetFreqTo min $2 $3 $4
 elif [[ "${1}" == "max" ]];then
@@ -127,7 +127,7 @@ elif [[ "${1}" == "freq" ]];then
     if [[ "${2}" == "save" ]];then
         SaveFreq="Y"
     fi
-    [[ "$SaveFreq" == "Y" ]] && echo "" > /sdcard/zyc_freq_info.txt
+    [[ "$SaveFreq" == "Y" ]] && echo "" > /sdcard/x_freq_info.txt
     GetInfoFreqx
 else
     Gethelp

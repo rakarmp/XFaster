@@ -32,7 +32,7 @@ fi
 clear
 . /system/etc/XCore/misc/get-bb.sh
 # . /system/etc/XCore/misc/initialize.sh
-echo "cmds: zyc_mlbb ${@}"
+echo "cmds: x_mlbb ${@}"
 JadiMoGimana=""
 if [ -f /data/data/com.mobile.legends/shared_prefs/com.mobile.legends.v2.playerprefs.xml ]; then
     MoLepath="/data/data/com.mobile.legends/shared_prefs/com.mobile.legends.v2.playerprefs.xml"

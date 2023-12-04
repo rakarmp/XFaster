@@ -33,7 +33,7 @@ clear
 . /system/etc/XCore/misc/get-bb.sh
 . /system/etc/XCore/misc/initialize.sh
 GameList=$MPATH/system/etc/XCore/configs/game_list.conf
-echo "cmds: zyc_g ${@}"
+echo "cmds: x_g ${@}"
 
 RegenGameList(){
     echo "---->> List-game-installed-start <<----" > $GameList
@@ -62,12 +62,12 @@ Gethelp(){
     echo "r or regen : to re-generate game list"
     echo "s or show : to show generated game list"
     echo "u or update : to update manual game list"
-    echo "example : zyc_g help"
+    echo "example : x_g help"
 }
 
 AddManual(){
     if [[ -z "${1}" ]];then
-        echo "no package id defined, example : zyc_g ${CallFunc} com.mobile.legends"
+        echo "no package id defined, example : x_g ${CallFunc} com.mobile.legends"
     else
         
         if [[ "$(cat $MPATH/system/etc/XCore/configs/manual_game_list.conf)" == *"${1}"* ]];then

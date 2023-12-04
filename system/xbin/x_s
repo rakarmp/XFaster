@@ -113,14 +113,14 @@ Gethelp(){
     echo "<config file name> <config value>: to update config value"
     echo "<config number> <config value>: to update config value"
     echo "Example: "
-    echo "zyc_s s drop_caches.conf"
+    echo "x_s s drop_caches.conf"
     echo "or"
-    echo "zyc_s drop_caches.conf 1"
+    echo "x_s drop_caches.conf 1"
     echo "or"
-    echo "zyc_s 1 1"
+    echo "x_s 1 1"
     echo "or, for check all config value"
-    echo "zyc_s c all"
-    echo "zyc_s check all"
+    echo "x_s c all"
+    echo "x_s check all"
 
 }
 ConfigListNumber(){
@@ -166,7 +166,7 @@ if [[ ! -z "${2}" ]];then
 else
     inputB=""
 fi
-echo "cmds: zyc_s $inputA $inputB"
+echo "cmds: x_s $inputA $inputB"
 if [[ -z "${inputA}" ]] || [[ -z "${inputB}" ]];then
     if [[ "$inputA" == "lc" ]];then
         ConfigListNumber
