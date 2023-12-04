@@ -1,0 +1,249 @@
+#!/system/bin/sh
+#
+# its me zyarexx
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+abuHitam='\e[01;90m' 2>/dev/null 1>/dev/null # abu abu - hitam
+putihHitam='\e[01;40m' 2>/dev/null 1>/dev/null # putih - hitam
+merahHitam='\e[01;91m' 2>/dev/null 1>/dev/null # merah - hitam
+merahPutih='\e[01;41m' 2>/dev/null 1>/dev/null # merah - putih
+kuningHitam='\e[01;93m' 2>/dev/null 1>/dev/null # kuning - hitam
+kuningPutih='\e[01;43m' 2>/dev/null 1>/dev/null # kuning - putih
+biruHitam='\e[01;94m' 2>/dev/null 1>/dev/null # biru - hitam
+biruPutih='\e[01;104m' 2>/dev/null 1>/dev/null # biru - putih
+cyanHitam='\e[01;96m' 2>/dev/null 1>/dev/null # cyan - hitam
+cyanPutih='\e[01;46m' 2>/dev/null 1>/dev/null # cyan - putih
+hijauHitam='\e[01;92m' 2>/dev/null 1>/dev/null # hijau - hitam
+hijauPutih='\e[01;42m' 2>/dev/null 1>/dev/null # hijau - putih
+unguHitam='\e[01;95m' 2>/dev/null 1>/dev/null # ungu - hitam
+unguPutih='\e[01;45m' 2>/dev/null 1>/dev/null # ungu - putih
+ResetWarna='\e[0m' 2>/dev/null 1>/dev/null # Buat Reser Warna
+if [ "$(id -u)" -gt "0" ] && [ "$(whoami)" != "root" ]; then
+    echo $merahHitam"please type 'su' first -_-"$ResetWarna
+    echo ""
+    echo "Exit after :"
+    for timeExit in 3s 2s 1s 0s
+    do
+        echo "$timeExit"
+        sleep 1s
+    done
+    exit -1
+fi
+clear
+. /system/etc/XCore/misc/get-bb.sh
+. /system/etc/XCore/misc/initialize.sh
+. /system/etc/XCore/misc/funclist.sh
+echo ""
+ConfigNumber(){
+    if [[ "${1}" == "1" ]];then
+        echo "drop_caches.conf"
+    elif [[ "${1}" == "2" ]];then
+        echo "drop_caches_time.conf"
+    elif [[ "${1}" == "3" ]];then
+        echo "force_doze.conf"
+    elif [[ "${1}" == "4" ]];then
+        echo "manual_game_list.conf"
+    elif [[ "${1}" == "5" ]];then
+        echo "max_check_gpu_usage.conf"
+    elif [[ "${1}" == "6" ]];then
+        echo "max_gpu_usage.conf"
+    elif [[ "${1}" == "7" ]];then
+        echo "min_gpu_usage.conf"
+    elif [[ "${1}" == "8" ]];then
+        echo "modules_mode.conf"
+    elif [[ "${1}" == "9" ]];then
+        echo "mtk_cpu_mode_off.conf"
+    elif [[ "${1}" == "10" ]];then
+        echo "mtk_cpu_mode_on.conf"
+    elif [[ "${1}" == "11" ]];then
+        echo "scheduler.conf"
+    elif [[ "${1}" == "12" ]];then
+        echo "scheduler.lock.conf"
+    elif [[ "${1}" == "13" ]];then
+        echo "sconfig.thermal.conf"
+    elif [[ "${1}" == "14" ]];then
+        echo "sconfig.thermal.lock.conf"
+    elif [[ "${1}" == "15" ]];then
+        echo "show_error.conf"
+    elif [[ "${1}" == "16" ]];then
+        echo "silent_overwrite.conf"
+    elif [[ "${1}" == "17" ]];then
+        echo "get_fps.conf"
+    elif [[ "${1}" == "18" ]];then
+        echo "use_cpu_tweak.conf"
+    elif [[ "${1}" == "19" ]];then
+        echo "wait_when_off.conf"
+    elif [[ "${1}" == "20" ]];then
+        echo "wait_when_on.conf"
+    elif [[ "${1}" == "21" ]];then
+        echo "write_info.conf"
+    elif [[ "${1}" == "22" ]];then
+        echo "status.conf"
+    elif [[ "${1}" == "23" ]];then
+        echo "cpu_on_lock.conf"
+    elif [[ "${1}" == "24" ]];then
+        echo "cpu_on_boot_lock.conf"
+    elif [[ "${1}" == "25" ]];then
+        echo "cpu_on_sleep_lock.conf"
+    elif [[ "${1}" == "26" ]];then
+        echo "cpu_on_lock_set.conf"
+    elif [[ "${1}" == "27" ]];then
+        echo "cpu_on_boot_lock_set.conf"
+    elif [[ "${1}" == "28" ]];then
+        echo "cpu_on_sleep_lock_set.conf"
+    elif [[ "${1}" == "29" ]];then
+        echo "gov_on.conf"
+    elif [[ "${1}" == "30" ]];then
+        echo "gov_off.conf"
+    elif [[ "${1}" == "31" ]];then
+        echo "get_fps_status.conf"
+    elif [[ "${1}" == "32" ]];then
+        echo "zram.conf"
+    elif [[ "${1}" == "33" ]];then
+        echo "zram_ext.conf"
+    else
+        echo "null"
+    fi
+}
+Gethelp(){
+    echo "Quick info: "
+    echo "lc: to check list config number "
+    echo "s or show: to show config value"
+    echo "c or check: to show config value"
+    echo "<config file name> <config value>: to update config value"
+    echo "<config number> <config value>: to update config value"
+    echo "Example: "
+    echo "zyc_s s drop_caches.conf"
+    echo "or"
+    echo "zyc_s drop_caches.conf 1"
+    echo "or"
+    echo "zyc_s 1 1"
+    echo "or, for check all config value"
+    echo "zyc_s c all"
+    echo "zyc_s check all"
+
+}
+ConfigListNumber(){
+    echo "Number Config File: "
+    echo "1 = drop_caches.conf"
+    echo "2 = drop_caches_time.conf"
+    echo "3 = force_doze.conf"
+    echo "4 = manual_game_list.conf"
+    echo "5 = max_check_gpu_usage.conf"
+    echo "6 = max_gpu_usage.conf"
+    echo "7 = min_gpu_usage.conf"
+    echo "8 = modules_mode.conf"
+    echo "9 = mtk_cpu_mode_off.conf"
+    echo "10 = mtk_cpu_mode_on.conf"
+    echo "11 = scheduler.conf"
+    echo "12 = scheduler.lock.conf"
+    echo "13 = sconfig.thermal.conf"
+    echo "14 = sconfig.thermal.lock.conf"
+    echo "15 = show_error.conf"
+    echo "16 = silent_overwrite.conf"
+    echo "17 = get_fps.conf"
+    echo "18 = use_cpu_tweak.conf"
+    echo "19 = wait_when_off.conf"
+    echo "20 = wait_when_on.conf"
+    echo "21 = write_info.conf"
+    echo "22 = status.conf"
+    echo "23 = cpu_on_lock.conf"
+    echo "24 = cpu_on_boot_lock.conf"
+    echo "25 = cpu_on_sleep_lock.conf"
+    echo "26 = cpu_on_lock_set.conf"
+    echo "27 = cpu_on_boot_lock_set.conf"
+    echo "28 = cpu_on_sleep_lock_set.conf"
+    echo "29 = gov_on.conf"
+    echo "30 = gov_off.conf"
+    echo "31 = get_fps_status.conf"
+    echo "32 = zram.conf"
+    echo "33 = zram_ext.conf"
+}
+inputA="$1"
+if [[ ! -z "${2}" ]];then
+    shift
+    inputB="${@}"
+else
+    inputB=""
+fi
+echo "cmds: zyc_s $inputA $inputB"
+if [[ -z "${inputA}" ]] || [[ -z "${inputB}" ]];then
+    if [[ "$inputA" == "lc" ]];then
+        ConfigListNumber
+    else
+        Gethelp
+    fi
+else
+    if [[ ! -z "$inputA" ]];then
+        if [[ ! -z "$inputB" ]];then
+            if [[ "$inputA" == "s" ]] || [[ "$inputA" == "show" ]] || [[ "$inputA" == "c" ]] || [[ "$inputA" == "check" ]];then
+                File="$inputB"
+                if [[ "$File" == "all" ]];then
+                    for ListConf in $(ls $PMConfig)
+                    do
+                        if [[ -f $PMConfig/$ListConf ]];then
+                            configFileVal="$(cat $PMConfig/$ListConf)"
+                            echo "config: $ListConf"
+                            echo "Value: $configFileVal"
+                            echo ""
+                        fi
+                    done
+                else
+                    if [[ "$File" != *".conf"* ]] && [[ ! -z "$(echo "$File" | grep -q "^[0-9]*$" && echo "OK")" ]];then
+                        File="$(ConfigNumber "$File")"
+                    fi
+                    if [[ -f "$PMConfig/$File" ]] && [[ "$File" != "null" ]];then
+                        echo "config: $File"
+                        echo "value: $(cat "$PMConfig/$File")"
+                    else
+                        if [[ ! -z "$File" ]] && [[ "$File" == "null" ]];then
+                            echo "config: wrong file number"
+                        else
+                            echo "config: file $File Not Found"
+                        fi
+                        Gethelp
+                        ConfigListNumber
+                    fi
+                fi
+            else
+                File="$inputA"
+                if [[ "$File" != *".conf"* ]] && [[ ! -z "$(echo "$File" | grep -q "^[0-9]*$" && echo "OK")" ]];then
+                    File="$(ConfigNumber "$File")"
+                fi
+                if [[ -f "$PMConfig/$File" ]] && [[ "$File" != "null" ]];then
+                    WriteOnly "$inputB" "$PMConfig/$File"
+                    if [[ "$(cat "$PMConfig/$File")" == "$inputB" ]];then
+                        echo "config: update [$File] value to [$inputB] success"
+                    else
+                        echo "config: update [$File] value to [$inputB] failed"
+                    fi
+                else
+                    if [[ "$File" == "null" ]];then
+                        echo "config: wrong file number"
+                    else
+                        if [[ "$File" == "cpu_on_lock.conf" ]] || [[ "$File" == "cpu_on_boot_lock.conf" ]] || [[ "$File" == "cpu_on_sleep_lock.conf" ]] || [[ "$File" == "cpu_on_lock_set.conf" ]] || [[ "$File" == "cpu_on_boot_lock_set.conf" ]] || [[ "$File" == "cpu_on_sleep_lock_set.conf" ]];then
+                            WriteOnly "$inputB" "$PMConfig/$File"
+                            if [[ "$(cat "$PMConfig/$File")" == "$inputB" ]];then
+                                echo "config: update [$File] value to [$inputB] success"
+                            else
+                                echo "config: update [$File] value to [$inputB] failed"
+                            fi
+                        else
+                            echo "config: [$File] Not Found"
+                        fi
+                    fi
+                fi
+            fi
+        else
+            if [[ "$inputA" == "lc" ]];then
+                ConfigListNumber
+            else
+                Gethelp
+                ConfigListNumber
+            fi
+        fi
+    else
+        Gethelp
+        ConfigListNumber
+    fi
+fi

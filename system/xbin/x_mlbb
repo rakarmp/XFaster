@@ -1,0 +1,65 @@
+#!/system/bin/sh
+#
+# its me zyarexx
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+abuHitam='\e[01;90m' 2>/dev/null 1>/dev/null # abu abu - hitam
+putihHitam='\e[01;40m' 2>/dev/null 1>/dev/null # putih - hitam
+merahHitam='\e[01;91m' 2>/dev/null 1>/dev/null # merah - hitam
+merahPutih='\e[01;41m' 2>/dev/null 1>/dev/null # merah - putih
+kuningHitam='\e[01;93m' 2>/dev/null 1>/dev/null # kuning - hitam
+kuningPutih='\e[01;43m' 2>/dev/null 1>/dev/null # kuning - putih
+biruHitam='\e[01;94m' 2>/dev/null 1>/dev/null # biru - hitam
+biruPutih='\e[01;104m' 2>/dev/null 1>/dev/null # biru - putih
+cyanHitam='\e[01;96m' 2>/dev/null 1>/dev/null # cyan - hitam
+cyanPutih='\e[01;46m' 2>/dev/null 1>/dev/null # cyan - putih
+hijauHitam='\e[01;92m' 2>/dev/null 1>/dev/null # hijau - hitam
+hijauPutih='\e[01;42m' 2>/dev/null 1>/dev/null # hijau - putih
+unguHitam='\e[01;95m' 2>/dev/null 1>/dev/null # ungu - hitam
+unguPutih='\e[01;45m' 2>/dev/null 1>/dev/null # ungu - putih
+ResetWarna='\e[0m' 2>/dev/null 1>/dev/null # Buat Reser Warna
+if [ "$(id -u)" -gt "0" ] && [ "$(whoami)" != "root" ]; then
+    echo $merahHitam"please type 'su' first -_-"$ResetWarna
+    echo ""
+    echo "Exit after :"
+    for timeExit in 3s 2s 1s 0s
+    do
+        echo "$timeExit"
+        sleep 1s
+    done
+    exit -1
+fi
+clear
+. /system/etc/XCore/misc/get-bb.sh
+# . /system/etc/XCore/misc/initialize.sh
+echo "cmds: zyc_mlbb ${@}"
+JadiMoGimana=""
+if [ -f /data/data/com.mobile.legends/shared_prefs/com.mobile.legends.v2.playerprefs.xml ]; then
+    MoLepath="/data/data/com.mobile.legends/shared_prefs/com.mobile.legends.v2.playerprefs.xml"
+    MoLeVal="$(cat $MoLepath | grep 'name="PreformanceLv" value="' | awk -F 'value=' '{print $2}' | sed 's/" //g' | sed 's/[/][>]//g' | sed 's/"//g' )"
+    echo "<-- -- Mobile Legends Graphics setting -- -->"
+    echo "1 > set low(1) "
+    echo "2 > set medium(2) "
+    echo "3 > set high(3) "
+    echo "4 > set ultra(4) "
+    echo "current Value : $MoLeVal"
+    echo -n "chose tweak config :"
+    read -n 1 -s -r JadiMoGimana
+    clear
+else
+    echo "this command only for force change Mobile Legends Graphics setting . . ."
+    echo "and ur not installed that game"
+    exit
+fi
+
+if [[ "$JadiMoGimana" == "1" ]] || [[ "$JadiMoGimana" == "2" ]] || [[ "$JadiMoGimana" == "3" ]] || [[ "$JadiMoGimana" == "4" ]];then
+    MoLeKey='name="PreformanceLv" value="'$MoLeVal'"'
+    MoLeVal='name="PreformanceLv" value="'$JadiMoGimana'"'
+    chmod  0666 $MoLepath
+    sed -i 's/'"$MoLeKey"'/'"$MoLeVal"'/g' "$MoLepath"
+    chmod  0660 $MoLepath
+else
+    echo "canceling . . ."
+fi
+echo "done . . ."
+exit

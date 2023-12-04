@@ -1,0 +1,128 @@
+## XFaster Module Magisk
+
+## Info Config
+
+- game_list.conf
+  - file yg ada secara otomatis berdasarkan aplikasi yg ter install untuk mengubah mode modules berdasarkan app tertentu ketika dibuka
+- manual_game_list.conf
+  - list game yg bisa di deteksi untuk generated game_list.conf
+- max_check_gpu_usage.conf
+  - Jumlah cek untuk mengubah mode ke enable atau disable
+- max_gpu_usage.conf
+  - maksimal gpu usage untuk membuat app saat ini di deteksi sebagai game (buat enable tweaknya)
+- min_gpu_usage.conf
+  - minimum gpu usage untuk membuat app saat ini di deteksi sebagai app normal(buat disable tweaknya)
+- wait_when_off.conf
+  - waktu tunggu ketika tweak di mode disabled sebelom melakukan check lagi
+- wait_when_on.conf
+  - waktu tunggu ketika tweak di mode enabled sebelom melakukan check lagi
+- modules_mode.conf
+  - info tentank mode modulnya (auto|force on|force off|by app|by GPU usage)
+- sconfig.thermal.conf
+  - thermal ketika modules nyala: info mode
+    - stock = tidak mengubah mode thermal
+    - 0 = Normal
+    - 9 = Game
+    - 16 = Game V2
+    - 10 = nyalakan semua cpu
+    - -1 = matikan service cpu thermal
+    - other mode : 1,2,8,11,12,13,14,15
+    - beberapa devices bisa pake -1 ato 15/16 biar lebih enak :p
+- sconfig.thermal.lock
+  - lock sthermal config
+- scheduler.conf
+  - ganti scheduler (kaya cfq bfq noop etc) pas module nyala
+- scheduler.lock.conf
+  - lock scheduler value
+- show_error.conf
+  - to melihat/menyembunyikan pesan error (recomended biarin off ae)
+- mtk_cpu_mode_on.conf (buat modul pas on) & mtk_cpu_mode_on.conf (buat modul pas off) (cuma buat MTK)
+  - buat rubah mode kernel dari hybrid(default one) ke EAS / HMP kalo kernel nya support, and isinya
+    - 0 = HMP
+    - 1 = EAS
+    - 2 = hybrid
+- drop_caches.conf
+  - config buat nyalain fitur otomatis hapus cache ram, caranya kirim character tertentu ke /proc/sys/vm/drop_caches, isinya
+    - 0 = off
+    - 1 = hapus clear pageCache only.
+    - 2 = hapus clear dentries ama inodes.
+    - 3 = hapus clear pagecache, dentries, ama inodes.
+- drop_caches_time.conf
+  - config buat waktu nunggu buat otomatis hapus cache, berdasarkan menit (bawaan nya 60 menit)
+- force_doze.conf
+  - paksa ke mode doze ketika layarnya mati
+- use_cpu_tweak.conf
+  - kalo anda mau pake beberapa tweak cpu, tinggal set "ketika off":"ketika on", contoh 1:3
+    - 1 = Balance
+    - 2 = Balance V2
+    - 3 = Performance
+    - 4 = Performance V2
+    - 5 = Latency
+    - 0 and etc = jangan tweak cpu
+- silent_overwrite.conf
+  - kalo situ pake modol tweak laennya, teros jadi conflict, cobain set ke 1, default 0
+- write_info.conf
+  - untuk melihat/menyembunyikan status tulis
+- status.conf
+  - untuk mematikan module (default 1)
+- gov_on.conf
+  - gov yg dipakai ketika module menyala
+- gov_off.conf
+  - gov yg dipakai ketika module mati
+- cpu_on_boot_lock.conf (buat cek list cpu freq, cek di <code>zyc_mc freq</code>)
+  - list freq cpu yg bakal di gunakan ketika module on (abaikan prime cores kalu device nya cuma ada 2 clusters [Little / Big])
+    - Example : 300000 1800000 500000 1900000 1200000 2900000
+    - itu maksudnya MinLittle MaxLittle MinBig MaxBig MinPrime MaxPrime
+- cpu_on_boot_lock_set.conf (butuh cpu_on_boot_lock.conf)
+  - list freq cpu yg bakal di gunakan ketika module on (abaikan prime cores kalu device nya cuma ada 2 clusters [Little / Big])
+    - Example : 0 1 3 4 7
+    - its mean cores 2 5 akan dimatikan dan 0 1 3 4 7 akan dibiarkan menyala
+- cpu_on_lock.conf (buat cek list cpu freq, cek di <code>zyc_mc freq</code>)
+  - list freq cpu yg bakal di gunakan ketika module off (abaikan prime cores kalu device nya cuma ada 2 clusters [Little / Big])
+    - Example : 300000 1800000 500000 1900000 1200000 2900000
+    - itu maksudnya MinLittle MaxLittle MinBig MaxBig MinPrime MaxPrime
+- cpu_on_lock_set.conf (butuh cpu_on_lock.conf)
+  - list freq cpu yg bakal di gunakan ketika module off (abaikan prime cores kalu device nya cuma ada 2 clusters [Little / Big])
+    - Example : 0 1 3 4 7
+    - its mean cores 2 5 akan dimatikan dan 0 1 3 4 7 akan dibiarkan menyala
+- cpu_on_sleep_lock.conf (buat cek list cpu freq, cek di <code>zyc_mc freq</code>)
+  - list freq cpu yg bakal di gunakan ketika module force doze ke trigger (rekomendasi abaikan ini, jika cpu_on_boot_lock minimal freq tidak menggunakan minimal freq yg ada, maksudnya kalo minimalnya 300 teros di set ke 500, di sini set aja ke 300 biar ga bikin battery boros)
+    - Example : 300000 1800000 500000 1900000 1200000 2900000
+    - itu maksudnya MinLittle MaxLittle MinBig MaxBig MinPrime MaxPrime
+- cpu_on_sleep_lock_set.conf (butuh cpu_on_sleep_lock.conf)
+  - list freq cpu yg bakal di gunakan ketika module force doze ke trigger (rekomendasi abaikan ini, jika cpu_on_boot_lock minimal freq tidak menggunakan minimal freq yg ada, maksudnya kalo minimalnya 300 teros di set ke 500, di sini set aja ke 300 biar ga bikin battery boros)
+    - Example : 0 1 3 4 7
+    - itu maksudnya cores 2 5 akan dimatikan dan 0 1 3 4 7 akan dibiarkan menyala
+- cib_on.conf
+  - mengubah parameter cpu input boost yg bisa di ubah ketika module menyala
+    - Isi di dalemnya = namafile:isinya
+- cib_off.conf
+  - mengubah parameter cpu input boost yg bisa di ubah ketika module mati
+    - Isi di dalemnya = namafile:isinya
+- zram.conf
+  - untuk mengubah ukuran swap (zram0) (satuannya per Gb)
+- zram_ext.conf
+  - untuk mengubah ukuran swap (zram1 dan lainnya) kalau memungkinkan
+    - satuaanya itu per Gb, 2 untuk 2 Gb ukuran swap nya
+    - -1 artinya kaga support
+
+## Info Terminal Command
+
+- x_l
+  - untuk melihat logs
+- x_le
+  - untuk melihat logs error
+- x_ldb
+  - untuk melihat logs hasil optimize db file
+- x_g
+  - untuk update list game yg terdeteksi
+- x_m
+  - untuk mengubah mode modules (auto|force on|force off|by app|by GPU usage)
+- x_mlbb
+  - untuk mengubah pengaturan grafis mlbb
+- x_fsync
+  - untuk mengubah mode fsync
+- x_s
+  - untuk mengubah file config
+- x_mc
+  - untuk mengubah frequensi CPU atau cek frequansi CPU

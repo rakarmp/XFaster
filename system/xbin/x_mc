@@ -1,0 +1,134 @@
+#!/system/bin/sh
+#
+# its me zyarexx
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+abuHitam='\e[01;90m' 2>/dev/null 1>/dev/null # abu abu - hitam
+putihHitam='\e[01;40m' 2>/dev/null 1>/dev/null # putih - hitam
+merahHitam='\e[01;91m' 2>/dev/null 1>/dev/null # merah - hitam
+merahPutih='\e[01;41m' 2>/dev/null 1>/dev/null # merah - putih
+kuningHitam='\e[01;93m' 2>/dev/null 1>/dev/null # kuning - hitam
+kuningPutih='\e[01;43m' 2>/dev/null 1>/dev/null # kuning - putih
+biruHitam='\e[01;94m' 2>/dev/null 1>/dev/null # biru - hitam
+biruPutih='\e[01;104m' 2>/dev/null 1>/dev/null # biru - putih
+cyanHitam='\e[01;96m' 2>/dev/null 1>/dev/null # cyan - hitam
+cyanPutih='\e[01;46m' 2>/dev/null 1>/dev/null # cyan - putih
+hijauHitam='\e[01;92m' 2>/dev/null 1>/dev/null # hijau - hitam
+hijauPutih='\e[01;42m' 2>/dev/null 1>/dev/null # hijau - putih
+unguHitam='\e[01;95m' 2>/dev/null 1>/dev/null # ungu - hitam
+unguPutih='\e[01;45m' 2>/dev/null 1>/dev/null # ungu - putih
+ResetWarna='\e[0m' 2>/dev/null 1>/dev/null # Buat Reser Warna
+if [ "$(id -u)" -gt "0" ] && [ "$(whoami)" != "root" ]; then
+    echo $merahHitam"please type 'su' first -_-"$ResetWarna
+    echo ""
+    echo "Exit after :"
+    for timeExit in 3s 2s 1s 0s
+    do
+        echo "$timeExit"
+        sleep 1s
+    done
+    exit -1
+fi
+clear
+echo "CPU frequency Changer"
+. /system/etc/XCore/misc/get-bb.sh
+. /system/etc/XCore/misc/initialize.sh
+. /system/etc/XCore/misc/funclist.sh
+SaveFreq="N"
+ShowAndWrite(){
+    echo "$1"
+    [[ "$SaveFreq" == "Y" ]] && echo "$1" >> /sdcard/zyc_freq_info.txt
+}
+GetInfoFreqx(){
+    local Pnumber="0"
+    local Fnumber="0"
+    echo ""
+    echo "List Cpu Freq :" && [[ "$SaveFreq" == "Y" ]] && echo "List Cpu Freq :" > /sdcard/zyc_freq_info.txt
+    ShowAndWrite ""
+    for GetClustersNumber in $(ls /sys/devices/system/cpu/cpufreq | grep policy)
+    do
+        if [[ "$Pnumber" == "0" ]];then
+            ShowAndWrite "Little Clusters :"
+        elif ShowAndWrite "$Pnumber" == "1" ]];then
+            echo "Big Clusters :"
+        elif [[ "$Pnumber" == "2" ]];then
+            ShowAndWrite "Prime Clusters :"
+        fi
+        Fnumber="0"
+        for GetInfoFreq in $(cat /sys/devices/system/cpu/cpufreq/$GetClustersNumber/scaling_available_frequencies)
+        do
+            ShowAndWrite "$Fnumber -> $GetInfoFreq"
+            Fnumber="$(($Fnumber+1))"
+        done
+        ShowAndWrite ""
+        Pnumber=$(($Pnumber+1))
+    done
+    if [[ "$SaveFreq" == "Y" ]];then
+        echo "create current cpu freq list to txt files done"
+        echo "files at /sdcard/zyc_freq_info.txt"
+    else
+        echo "if u want to create a file for current cpu freq list to txt files"
+        echo "just type zyc_mc freq save"
+    fi
+}
+
+SetFreqTo(){
+    local Pnumber="2"
+    local Fnumber="0"
+    local Little="-1"
+    local Big="-1"
+    local Prime="-1"
+    for GetClustersNumber in $(ls /sys/devices/system/cpu/cpufreq | grep policy)
+    do
+        Fnumber="0"
+        for GetInfoFreq in $(cat /sys/devices/system/cpu/cpufreq/$GetClustersNumber/scaling_available_frequencies)
+        do
+            Tnumber=$Fnumber
+            if [[ "$(eval echo \${$Pnumber})" == "$Fnumber" ]];then
+                if [[ "$Pnumber" == "2" ]];then
+                    Little="$GetInfoFreq"
+                elif [[ "$Pnumber" == "3" ]];then
+                    Big="$GetInfoFreq"
+                elif [[ "$Pnumber" == "4" ]];then
+                    Prime="$GetInfoFreq"
+                fi
+                break
+            fi
+            Fnumber="$(($Fnumber+1))"
+        done
+    Pnumber=$(($Pnumber+1))
+    done
+    [[ "$Little" != "-1" ]] && echo "Little : $Little"
+    [[ "$Big" != "-1" ]] && echo "Big : $Big"
+    [[ "$Prime" != "-1" ]] && echo "Prime : $Prime"
+    if [[ "${1}" == "min" ]];then
+        SetFreqCpu min $Little $Big $Prime
+    elif [[ "${1}" == "max" ]];then
+        SetFreqCpu max $Little $Big $Prime
+    fi
+}
+
+Gethelp(){
+    echo "Quick info: "
+    echo "max : to set max cpu freq"
+    echo "min : to set minimum cpu freq"
+    echo "freq : to see list freq number"
+    echo "anyword : to show this help"
+    echo "example :"
+    echo "  - zyc_mc min 0 7"
+    echo "  - zyc_mc freq"
+}
+echo "cmds: zyc_mc ${@}"
+if [[ "${1}" == "min" ]];then
+    SetFreqTo min $2 $3 $4
+elif [[ "${1}" == "max" ]];then
+    SetFreqTo max $2 $3 $4
+elif [[ "${1}" == "freq" ]];then
+    if [[ "${2}" == "save" ]];then
+        SaveFreq="Y"
+    fi
+    [[ "$SaveFreq" == "Y" ]] && echo "" > /sdcard/zyc_freq_info.txt
+    GetInfoFreqx
+else
+    Gethelp
+fi

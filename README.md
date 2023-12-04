@@ -1,0 +1,128 @@
+## XFaster Module Magisk
+
+## Info Config
+
+- game_list.conf
+  - automatic generated depend installed app for turn on modules when specific app opened
+- manual_game_list.conf
+  - list game can be detected for generated game_list.conf
+- max_check_gpu_usage.conf
+  - Total check time to change mode to enable or disable tweak
+- max_gpu_usage.conf
+  - maximumg gpu usage to make current proccess detected as game (i mean to enable tweak)
+- min_gpu_usage.conf
+  - minimum gpu usage to make current proccess detected as normal app (i mean to disable tweak)
+- wait_when_off.conf
+  - wait time when tweak disabled before do check again
+- wait_when_on.conf
+  - wait time when tweak enabled before do check again
+- modules_mode.conf
+  - info about modules mode (auto|force on|force off|by app|by GPU usage)
+- sconfig.thermal.conf
+  - thermal mode when modules on: info mode
+    - stock = not change thermal mode
+    - 0 = Normal
+    - 9 = Game
+    - 16 = Game V2
+    - 10 = enable all cpu
+    - -1 = disable cpu thermal service
+    - other mode : 1,2,8,11,12,13,14,15
+    - some devices can use -1 or 15/16 for better experience :p
+- sconfig.thermal.lock.conf
+  - lock sthermal config
+- scheduler.conf
+  - change scheduler (like cfq bfq noop etc) when module on
+- scheduler.lock.conf
+  - lock scheduler value
+- show_error.conf
+  - to show/hide error message (recomended to leave it off)
+- mtk_cpu_mode_on.conf (while modules tweak on) & mtk_cpu_mode_on.conf (while modules tweak off) (for MTK only)
+  - changes kernel mode from hybrid(default one) to EAS / HMP if kernels supported it, and value about it
+    - 0 = HMP
+    - 1 = EAS
+    - 2 = hybrid
+- drop_caches.conf
+  - config to enable auto clear ram cache, using method send some value to /proc/sys/vm/drop_caches ,value about it
+    - 0 = off
+    - 1 = clear pageCache only.
+    - 2 = clear dentries and inodes.
+    - 3 = clear pagecache, dentries, and inodes.
+- drop_caches_time.conf
+  - config for wait time to auto clear ram cache, by minutes (default 60 minutes)
+- force_doze.conf
+  - forcing to doze idle state when display/screen off
+- use_cpu_tweak.conf
+  - if u want to apply some cpu tweak from this modules, just set it to "when off":"when on", example 1:3
+    - 1 = Balance
+    - 2 = Balance V2
+    - 3 = Performance
+    - 4 = Performance V2
+    - 5 = Latency
+    - 0 and etc = dont tweak cpu
+- silent_overwrite.conf
+  - if u use another tweak modules, then its conflict, try set this to 1, default 0
+- write_info.conf
+  - to show/hide write status
+- status.conf
+  - for turn off module (default 1)
+- gov_on.conf
+  - used gov when module on
+- gov_off.conf
+  - used gov when module off
+- cpu_on_boot_lock.conf (to check list cpu freq value, check it on <code>zyc_mc freq</code>)
+  - list cpu freq will be used later when module is off (ignore prime cores when ur device only have 2 clusters [Little / Big]))
+    - Example : 300000 1800000 500000 1900000 1200000 2900000
+    - its mean MinLittle MaxLittle MinBig MaxBig MinPrime MaxPrime
+- cpu_on_boot_lock_set.conf (need cpu_on_boot_lock.conf)
+  - list cpu freq will be used later when module is off (ignore prime cores when ur device only have 2 clusters [Little / Big]))
+    - Example : 0 1 3 4 7
+    - its mean cores 2 5 will be disabled and 0 1 3 4 7 will be enabled
+- cpu_on_lock.conf (to check list cpu freq value, check it on <code>zyc_mc freq</code>)
+  - list cpu freq will be used later when module is on (ignore prime cores when ur device only have 2 clusters [Little / Big]))
+    - Example : 300000 1800000 500000 1900000 1200000 2900000
+    - its mean MinLittle MaxLittle MinBig MaxBig MinPrime MaxPrime
+- cpu_on_lock_set.conf (need cpu_on_lock.conf)
+  - list cpu freq will be used later when module is on (ignore prime cores when ur device only have 2 clusters [Little / Big]))
+    - Example : 0 1 3 4 7
+    - its mean cores 2 5 will be disabled and 0 1 3 4 7 will be enabled
+- cpu_on_sleep_lock.conf (to check list cpu freq value, check it on <code>zyc_mc freq</code>)
+  - list cpu freq will be used later when module is force doze triggered (recomended to skip this, but if cpu_on_boot_lock minimum freq not used minimal available minimal freq, u can setup this one)
+    - Example : 300000 1800000 500000 1900000 1200000 2900000
+    - its mean MinLittle MaxLittle MinBig MaxBig MinPrime MaxPrime
+- cpu_on_sleep_lock_set.conf (need cpu_on_sleep_lock.conf)
+  - list cpu freq will be used later when module is force doze triggered (recomended to skip this, but if cpu_on_boot_lock minimum freq not used minimal available minimal freq, u can setup this one)
+    - Example : 0 1 3 4 7
+    - its mean cores 2 5 will be disabled and 0 1 3 4 7 will be enabled
+- cib_on.conf
+  - for change cpu input boost tweakable parameters when module is on
+    - Value inside it = filename:value
+- cib_off.conf
+  - for change cpu input boost tweakable parameters when module is off
+    - Value inside it = filename:value
+- zram.conf
+  - for change swap (zram0) size (value in Gb)
+- zram_ext.conf
+  - for change swap (zram1 and etc) size if possible
+    - value in Gb, 2 for 2 Gb swap size
+    - -1 mean not supported
+
+## Info Terminal Command
+
+- zyc_l
+  - for check logs
+- zyc_le
+  - for check logs error
+- zyc_ldb
+  - for check logs optimize db file result
+- zyc_g
+  - for update detected game list
+- zyc_m
+  - for change modules mode (auto|force on|force off|by app|by GPU usage)
+- zyc_mlbb
+  - for change mlbb graphic option
+- zyc_fsync
+  - for change fsync mode
+- zyc_s
+  - for update config file
+- zyc_mc
+  - for change CPU frequency or check CPU frequency

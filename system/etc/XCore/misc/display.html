@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>GetFps | BashTInfoBash--</title>
+</head>
+<style>
+    table,
+    th,
+    td {
+        border: 1px solid black;
+        text-align: center;
+    }
+</style>
+
+<body>
+    <table width=100%>
+        <tr>
+            <th width=11%>Kernel</th>
+            <td>BashKInfoBash--</td>
+        </tr>
+    </table>
+    <div id='chartContainer' style='height: 370px; width: 100%;'></div>
+    <hr>
+    <button id='BF'>FPS</button>
+    <button id='BC'>Frame Count</button>
+    <hr>
+    <div id='chartContainerB' style='height: 370px; width: 100%;'></div>
+    <div id="forCustomBtn"></div>
+    <hr id="forCustomBtnLn">
+    <button id='table'>Table</button>
+    <table width=100% id='listFps' style="display: none;">
+        <tr id="TableHead">
+            <th width='11%'>No</th>
+            <th>Time</th>
+        </tr>
+    </table>
+    <script type='text/javascript' src='https://code.jquery.com/jquery-3.6.0.min.js'></script>
+    <script type='text/javascript' src='https://canvasjs.com/assets/script/jquery.canvasjs.min.js'></script>
+    <h2>its me Zyarexx</h2>
+    <script>
+        function getMin(data) {
+            if (data.length > 1) {
+                var min = 0;
+                $.each(data, function (key, value) {
+                    if (value > 0 && value <= min) {
+                        min = value;
+                    } else if (min == 0) {
+                        min = value;
+                    }
+                });
+            } else {
+                return "-";
+            }
+            return min;
+        }
+        function getMax(data) {
+            if (data.length > 1) {
+                var max = 0;
+                $.each(data, function (key, value) {
+                    if (value > 0 && value >= max) {
+                        max = value;
+                    } else if (max == 0) {
+                        max = value;
+                    }
+                });
+            } else {
+                return "-";
+            }
+            return max;
+        }
+        function getAVG(length, total) {
+            if (total > 1) {
+                return parseFloat(total / length).toFixed(2);
+            } else {
+                return "-";
+            }
+        }
+        function getSmooth(data) {
+            if (data.length > 1) {
+                total = 0;
+                $.each(data, function (key, value) {
+                    if (value >= 45) {
+                        total++;
+                    }
+                });
+            } else {
+                return "-";
+            }
+            return parseFloat((100 / data.length) * total).toFixed(2) + "%";
+        }
+        function isNumeric(n) {
+            return !isNaN(parseFloat(n)) && isFinite(n);
+        }
+        var FPS = 'BashTFNameBash--';
+        var FrameCount = 'BashFCNameBash--';
+        var Time = 'BashTNameBash--';
+        if (FPS.includes('BashTFNameBash')) {
+            FPS = '59 60 60 59 59 59 58 60 55 30 58 59 53 59 52 41 0 0 53 87 ';
+        }
+        if (FrameCount.includes('BashFCNameBash')) {
+            FrameCount = '';
+        }
+        if (Time.includes('BashTNameBash')) {
+            Time = '01:29:34 01:29:38 01:29:40 01:29:42 01:29:45 01:29:47 01:29:50 01:29:52 01:29:54 01:29:56 01:29:59 01:30:01 01:30:03 01:30:06 01:30:08 01:30:10 01:30:13 01:30:15 01:30:17 01:30:19 ';
+        }
+        var Cpu = 'BashCTNameBash--';
+        var CpuLabel = 'BashCTLNameBash--';
+        var Battary = 'BashBTNameBash--';
+        var CTemp = 'BashCTempBash--';
+        if (Cpu.includes('BashCTNameBash')) {
+            Cpu = '';
+        }
+        if (CpuLabel.includes('BashCTLNameBash')) {
+            CpuLabel = '';
+
+        }
+        if (Battary.includes('BashBTNameBash')) {
+            Battary = '';
+        }
+        if (CTemp.includes('BashCTempBash')) {
+            CTemp = '';
+        }
+        var FPSArray = FPS.split(' ');
+        var FrameCountArray = FrameCount.split(' ');
+        var TimeArray = Time.split(' ');
+        var CpuArray = Cpu.split(' ');
+        var CpuLabelArray = CpuLabel.split(' ');
+        var BattaryArray = Battary.split(' ');
+        var CpuVal = new Array();
+        $.each(CpuArray, function (key, value) {
+            SplitCpu = value.split(':');
+            CpuVal[key] = [{}];
+            $.each(SplitCpu, function (keyb, valueb) {
+                CpuVal[key][keyb] = {
+                    temp: valueb
+                };
+            });
+        });
+        FPSSum = 0;
+        FrameCountSum = 0;
+        $.each(FPSArray, function () { FPSSum += parseFloat(this) || 0; });
+        $.each(FrameCountArray, function () { FrameCountSum += parseFloat(this) || 0; });
+        var forBarFps = new Array();
+        var forBarFC = new Array();
+        var forBarCpu = new Array();
+        var forDataCpu = new Array();
+        var forBarBat = new Array();
+        for (let index = 0; index < TimeArray.length; index++) {
+            forBarFps[index] = {
+                label: TimeArray[index],
+                y: parseInt(FPSArray[index])
+            }
+
+        }
+        for (let index = 0; index < TimeArray.length; index++) {
+            forBarFC[index] = {
+                label: TimeArray[index],
+                y: parseInt(FrameCountArray[index])
+            }
+
+        }
+        for (let index = 0; index < CpuVal.length; index++) {
+            for (let indexB = 0; indexB < CpuVal[index].length; indexB++) {
+                if (CpuVal[index][indexB].temp) {
+                    if (!forBarCpu[indexB]) {
+                        forBarCpu[indexB] = [];
+                    }
+                    if ((parseInt(CpuVal[index][indexB].temp) / CTemp)) {
+                        forBarCpu[indexB][index] = {
+                            label: TimeArray[indexB],
+                            y: (parseInt(CpuVal[index][indexB].temp) / CTemp)
+                        }
+                    }
+                }
+            }
+        }
+        for (let index = 0; index < forBarCpu.length; index++) {
+            forDataCpu[index] = {
+                name: CpuLabelArray[index],
+                showInLegend: true,
+                type: 'line',
+                visible: true,
+                dataPoints: forBarCpu[index]
+            }
+
+        }
+        for (let index = 0; index < BattaryArray.length; index++) {
+            if ((parseInt(BattaryArray[index]) / CTemp)) {
+                forBarBat[index] = {
+                    label: TimeArray[index],
+                    y: (parseInt(BattaryArray[index]) / CTemp)
+                }
+            }
+        }
+        forDataCpu[forDataCpu.length] = {
+            name: "batery",
+            showInLegend: true,
+            type: 'line',
+            visible: true,
+            dataPoints: forBarBat
+        }
+        window.onload = function () {
+            var options = {
+                title: {
+                    text: 'Info'
+                },
+                axisX: {
+                    crosshair: {
+                        enabled: true,
+                        snapToDataPoint: true
+                    }
+                },
+                axisY: {
+                    title: 'Total FPS',
+                    crosshair: {
+                        enabled: true,
+                        snapToDataPoint: true
+                    }
+                },
+                data: [
+                    {
+                        // Change type to 'doughnut', 'line', 'splineArea', etc.
+                        name: 'FPS',
+                        showInLegend: true,
+                        type: 'line',
+                        visible: true,
+                        dataPoints: forBarFps
+                    },
+                    {
+                        // Change type to 'doughnut', 'line', 'splineArea', etc.
+                        name: 'Frame Count',
+                        showInLegend: true,
+                        type: 'line',
+                        visible: true,
+                        dataPoints: forBarFC
+                    }
+                ]
+            };
+
+            var optionsB = {
+                title: {
+                    text: 'Info Temp'
+                },
+                axisX: {
+                    crosshair: {
+                        enabled: true,
+                        snapToDataPoint: true
+                    }
+                },
+                axisY: {
+                    title: 'Total Temp',
+                    crosshair: {
+                        enabled: true,
+                        snapToDataPoint: true
+                    }
+                },
+                data: forDataCpu
+            };
+            if (FrameCountArray.length == 1) {
+                options.data[1].visible = false;
+                $('#BC').toggle();
+            }
+            $('#chartContainer').CanvasJSChart(options);
+            $('#chartContainerB').CanvasJSChart(optionsB);
+            $('#BF').click(function () {
+                options.data[0].visible = !options.data[0].visible;
+                $('#chartContainer').CanvasJSChart(options);
+            });
+            $('#BC').click(function () {
+                options.data[1].visible = !options.data[1].visible;
+                $('#chartContainer').CanvasJSChart(options);
+            });
+            $('#table').click(function () {
+                $('#listFps').toggle();
+            });
+            no = 0;
+
+            $.each(TimeArray, function (key, value) {
+                no++;
+                if (FPSArray[key]) {
+                    if (FrameCountArray.length > key) {
+                        FrameVal = FrameCountArray[key];
+                    } else {
+                        FrameVal = "-";
+                    }
+                    if (FrameVal == '') {
+                        FrameVal = "-";
+                    }
+                    isiNya = '<tr><td>' + no + '</td><td>' + value + '</td>';
+                    if (forDataCpu.length > 1) {
+                        $.each(forDataCpu, function (keyb, valueb) {
+                            if (no == 1) {
+                                if (CpuLabelArray[keyb]) {
+                                    label = CpuLabelArray[keyb];
+                                } else {
+                                    label = "Battery";
+                                }
+                                $('#TableHead').append('<th>' + label + '</th>');
+                            }
+                            isiNya += '<td>' + (valueb.dataPoints[key].y) + '</td>'
+                        });
+                    }
+                    if (no == 1) {
+                        if (FrameVal == "-") {
+                            $('#TableHead').append('<th>FPS</th>');
+                        } else {
+                            $('#TableHead').append('<th>FPS</th> <th>Frame Count</th>');
+                        }
+                    }
+                    if (FrameVal == "-") {
+                        isiNya += '<td>' + FPSArray[key] + '</td></tr>';
+                    } else {
+                        isiNya += '<td>' + FPSArray[key] + '</td><td>' + FrameVal + '</td></tr>';
+                    }
+                    $('#listFps').append(isiNya);
+                }
+            });
+            no = 0;
+            $.each(forDataCpu, function (key, value) {
+                no++;
+                if (forDataCpu[key]) {
+                    if (CpuLabelArray[key]) {
+                        label = CpuLabelArray[key];
+                    } else {
+                        label = "Battery";
+                    }
+                    $('#forCustomBtn').append('<button id=ForHide-' + no + '>' + label + '</button>&nbsp;');
+                    $('#ForHide-' + no).click(function () {
+                        optionsB.data[key].visible = !optionsB.data[key].visible;
+                        $('#chartContainerB').CanvasJSChart(optionsB);
+                    });
+                }
+            });
+            AddMoreLow = "";
+            AddMoreHigh = "";
+            AddMoreAvg = "";
+            sFlow = "";
+            sFhigh = "";
+            $.each(forDataCpu, function (keyb, valueb) {
+                Data = 0;
+                no = 0;
+                $.each(valueb.dataPoints, function () {
+                    CurrVal = this.y;
+                    Data += parseFloat(CurrVal) || 0;
+                    no++;
+                    if (no == 1) {
+                        sFlow = CurrVal;
+                        sFhigh = CurrVal;
+                    } else {
+                        if (CurrVal < sFlow) {
+                            sFlow = CurrVal;
+                        }
+                        if (CurrVal > sFhigh) {
+                            sFhigh = CurrVal;
+                        }
+                    }
+                });
+                if (forDataCpu.length > 1) {
+                    AddMoreAvg += '<td>' + parseFloat(Data / no).toFixed(2) + '</td>'
+                    AddMoreLow += '<td>' + sFlow + '</td>'
+                    AddMoreHigh += '<td>' + sFhigh + '</td>'
+                }
+            });
+            totalData = (forDataCpu.length + 2);
+            if (forDataCpu.length <= 1) {
+                totalData = 2;
+                $('#chartContainerB').hide();
+                $('#forCustomBtn').hide();
+                $('#forCustomBtnLn').hide();
+            }
+
+            AddMoreLowB = "";
+            AddMoreHighB = "";
+            AddMoreAvgB = "";
+            AddMoreFL = ""
+            if (FrameCountArray.length > 1) {
+                $('#BC').hide();
+                AddMoreLowB += "<td id='LC'>-</td>";
+                AddMoreHighB += "<td id='HC'>-</td>";
+                AddMoreAvgB += "<td id='AC'>-</td>";
+                AddMoreFL += "<td id='SC'>-</td>";
+            }
+            $('#listFps').append("<tr> <td colspan='2'>Low</td>" + AddMoreLow + " <td id='LF'>-</td> " + AddMoreLowB + " </tr><tr> <td colspan='2'>High</td>" + AddMoreHigh + " <td id='HF'>-</td> " + AddMoreHighB + " </tr><tr> <td colspan='2'>Average</td>" + AddMoreAvg + " <td id='AF'>-</td> " + AddMoreAvgB + " </tr><tr> <td colspan='" + totalData + "'>45 FPS+</td> <td id='SF'>-</td> " + AddMoreFL + "</tr>");
+            $('#LF').html(getMin(FPSArray));
+            $('#LC').html(getMin(FrameCountArray));
+            $('#HF').html(getMax(FPSArray));
+            $('#HC').html(getMax(FrameCountArray));
+            $('#AF').html(getAVG(FPSArray.length, FPSSum));
+            $('#AC').html(getAVG(FrameCountArray.length, FrameCountSum));
+            $('#SF').html(getSmooth(FPSArray));
+            $('#SC').html(getSmooth(FrameCountArray));
+        };
+    </script>
+</body>
+
+</html>
