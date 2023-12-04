@@ -69,7 +69,7 @@
   - used gov when module on
 - gov_off.conf
   - used gov when module off
-- cpu_on_boot_lock.conf (to check list cpu freq value, check it on <code>zyc_mc freq</code>)
+- cpu_on_boot_lock.conf (to check list cpu freq value, check it on <code>x_mc freq</code>)
   - list cpu freq will be used later when module is off (ignore prime cores when ur device only have 2 clusters [Little / Big]))
     - Example : 300000 1800000 500000 1900000 1200000 2900000
     - its mean MinLittle MaxLittle MinBig MaxBig MinPrime MaxPrime
@@ -77,7 +77,7 @@
   - list cpu freq will be used later when module is off (ignore prime cores when ur device only have 2 clusters [Little / Big]))
     - Example : 0 1 3 4 7
     - its mean cores 2 5 will be disabled and 0 1 3 4 7 will be enabled
-- cpu_on_lock.conf (to check list cpu freq value, check it on <code>zyc_mc freq</code>)
+- cpu_on_lock.conf (to check list cpu freq value, check it on <code>x_mc freq</code>)
   - list cpu freq will be used later when module is on (ignore prime cores when ur device only have 2 clusters [Little / Big]))
     - Example : 300000 1800000 500000 1900000 1200000 2900000
     - its mean MinLittle MaxLittle MinBig MaxBig MinPrime MaxPrime
@@ -85,7 +85,7 @@
   - list cpu freq will be used later when module is on (ignore prime cores when ur device only have 2 clusters [Little / Big]))
     - Example : 0 1 3 4 7
     - its mean cores 2 5 will be disabled and 0 1 3 4 7 will be enabled
-- cpu_on_sleep_lock.conf (to check list cpu freq value, check it on <code>zyc_mc freq</code>)
+- cpu_on_sleep_lock.conf (to check list cpu freq value, check it on <code>x_mc freq</code>)
   - list cpu freq will be used later when module is force doze triggered (recomended to skip this, but if cpu_on_boot_lock minimum freq not used minimal available minimal freq, u can setup this one)
     - Example : 300000 1800000 500000 1900000 1200000 2900000
     - its mean MinLittle MaxLittle MinBig MaxBig MinPrime MaxPrime

@@ -69,7 +69,7 @@
   - gov yg dipakai ketika module menyala
 - gov_off.conf
   - gov yg dipakai ketika module mati
-- cpu_on_boot_lock.conf (buat cek list cpu freq, cek di <code>zyc_mc freq</code>)
+- cpu_on_boot_lock.conf (buat cek list cpu freq, cek di <code>x_mc freq</code>)
   - list freq cpu yg bakal di gunakan ketika module on (abaikan prime cores kalu device nya cuma ada 2 clusters [Little / Big])
     - Example : 300000 1800000 500000 1900000 1200000 2900000
     - itu maksudnya MinLittle MaxLittle MinBig MaxBig MinPrime MaxPrime
@@ -77,7 +77,7 @@
   - list freq cpu yg bakal di gunakan ketika module on (abaikan prime cores kalu device nya cuma ada 2 clusters [Little / Big])
     - Example : 0 1 3 4 7
     - its mean cores 2 5 akan dimatikan dan 0 1 3 4 7 akan dibiarkan menyala
-- cpu_on_lock.conf (buat cek list cpu freq, cek di <code>zyc_mc freq</code>)
+- cpu_on_lock.conf (buat cek list cpu freq, cek di <code>x_mc freq</code>)
   - list freq cpu yg bakal di gunakan ketika module off (abaikan prime cores kalu device nya cuma ada 2 clusters [Little / Big])
     - Example : 300000 1800000 500000 1900000 1200000 2900000
     - itu maksudnya MinLittle MaxLittle MinBig MaxBig MinPrime MaxPrime
@@ -85,7 +85,7 @@
   - list freq cpu yg bakal di gunakan ketika module off (abaikan prime cores kalu device nya cuma ada 2 clusters [Little / Big])
     - Example : 0 1 3 4 7
     - its mean cores 2 5 akan dimatikan dan 0 1 3 4 7 akan dibiarkan menyala
-- cpu_on_sleep_lock.conf (buat cek list cpu freq, cek di <code>zyc_mc freq</code>)
+- cpu_on_sleep_lock.conf (buat cek list cpu freq, cek di <code>x_mc freq</code>)
   - list freq cpu yg bakal di gunakan ketika module force doze ke trigger (rekomendasi abaikan ini, jika cpu_on_boot_lock minimal freq tidak menggunakan minimal freq yg ada, maksudnya kalo minimalnya 300 teros di set ke 500, di sini set aja ke 300 biar ga bikin battery boros)
     - Example : 300000 1800000 500000 1900000 1200000 2900000
     - itu maksudnya MinLittle MaxLittle MinBig MaxBig MinPrime MaxPrime
