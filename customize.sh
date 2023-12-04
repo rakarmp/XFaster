@@ -138,7 +138,7 @@ if [[ -z "$MagiskBase" ]] && [[ -d /data/adb/ksu  ]];then
     MagiskBase="/data/adb"
 fi
 echo "$MagiskBase/modules" > $MODPATH/system/etc/XCore/info/magisk_path
-OldModolPath="$MagiskBase/modules/X-Faster"
+OldModolPath="$MagiskBase/modules/ZyC-Turbo-New"
 
 if [[ "$MODPATH" == *"modules_update"* ]] && [[ ! -z "$OldModolPath" ]];then
     ## copy system.prop
