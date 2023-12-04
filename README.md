@@ -108,21 +108,21 @@
 
 ## Info Terminal Command
 
-- zyc_l
+- x_l
   - for check logs
-- zyc_le
+- x_le
   - for check logs error
-- zyc_ldb
+- x_ldb
   - for check logs optimize db file result
-- zyc_g
+- x_g
   - for update detected game list
-- zyc_m
+- x_m
   - for change modules mode (auto|force on|force off|by app|by GPU usage)
-- zyc_mlbb
+- x_mlbb
   - for change mlbb graphic option
-- zyc_fsync
+- x_fsync
   - for change fsync mode
-- zyc_s
+- x_s
   - for update config file
-- zyc_mc
+- x_mc
   - for change CPU frequency or check CPU frequency
